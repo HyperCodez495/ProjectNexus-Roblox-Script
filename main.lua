@@ -17,17 +17,19 @@ local GITHUB_REPO = "HyperCodez495/ProjectNexus-Roblox-Script"
 local GITHUB_BRANCH = "main"
 local GITHUB_BASE = string.format("https://raw.githubusercontent.com/%s/%s/", GITHUB_REPO, GITHUB_BRANCH)
 
--- Core module imports with fallback to embedded
-local function loadModule(name, embedded)
+-- Core module imports with fallback
+local function loadModule(name)
     local cacheBuster = "?v=" .. tostring(tick())
     local success, module = pcall(function()
         return loadstring(game:HttpGet(GITHUB_BASE .. "core/" .. name .. ".lua" .. cacheBuster))()
     end)
     if success and module then
+        print("[NEXUS] Loaded module: " .. name)
         return module
     else
-        warn("[NEXUS] Failed to load " .. name .. " from GitHub: " .. tostring(module))
-        return embedded or {}  -- Return empty table as fallback
+        warn("[NEXUS] Failed to load " .. name .. ": " .. tostring(module))
+        warn("[NEXUS] This is critical - framework cannot function without core modules")
+        return nil
     end
 end
 
@@ -35,6 +37,13 @@ local Scanner = loadModule("scanner")
 local Injector = loadModule("injector")
 local Executor = loadModule("executor")
 local Connection = loadModule("connection")
+
+-- Verify all modules loaded
+if not Scanner or not Injector or not Executor or not Connection then
+    warn("[NEXUS] Critical module loading failure - aborting initialization")
+    warn("[NEXUS] Check that all files are pushed to GitHub")
+    return nil
+end
 
 local Nexus = {}
 Nexus.__index = Nexus
@@ -52,11 +61,16 @@ function Nexus.new(config)
         githubBranch = GITHUB_BRANCH
     }
     
-    -- Initialize components
+    -- Initialize components (check for nil)
     self.scanner = Scanner and Scanner.new and Scanner.new() or nil
     self.injector = Injector and Injector.new and Injector.new(self.config.commandServer) or nil
     self.connection = Connection and Connection.new and Connection.new(self.config.commandServer, self.config.authKey) or nil
     self.executor = nil  -- Initialized after backdoor deployment
+    
+    -- Verify critical components
+    if not self.scanner then
+        warn("[NEXUS] Scanner failed to initialize")
+    end
     
     -- State
     self.initialized = false
@@ -91,6 +105,11 @@ end
 
 -- Scan current game for vulnerabilities
 function Nexus:ScanCurrentGame()
+    if not self.scanner then
+        warn("[NEXUS] Scanner not initialized - cannot scan")
+        return nil
+    end
+    
     print("[NEXUS] Scanning game for vulnerabilities...")
     
     local results = self.scanner:ScanGame(game)
@@ -339,15 +358,5 @@ function Nexus:Shutdown()
     print("[NEXUS] Shutdown complete")
 end
 
--- Export global interface
-_G.Nexus = Nexus
-
--- Auto-initialize if configured
-if getgenv and getgenv().NexusAutoInit then
-    local instance = Nexus.new()
-    instance:Initialize()
-    _G.NexusInstance = instance
-    print("[NEXUS] Auto-initialized - Access via _G.NexusInstance")
-end
-
+-- Export module
 return Nexus
