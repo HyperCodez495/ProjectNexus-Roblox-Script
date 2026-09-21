@@ -6,7 +6,10 @@
 local Connection = {}
 Connection.__index = Connection
 
-local HttpService = game:GetService("HttpService")
+-- Service loaded on demand
+local function getHttpService()
+    return game:GetService("HttpService")
+end
 
 function Connection.new(endpoint, authKey)
     local self = setmetatable({}, Connection)
@@ -38,8 +41,8 @@ end
 -- Establish connection to command server
 function Connection:Connect()
     local success, response = pcall(function()
-        return HttpService:PostAsync(self.endpoint .. "/connect", 
-            HttpService:JSONEncode({
+        return getHttpService():PostAsync(self.endpoint .. "/connect", 
+            getHttpService():JSONEncode({
                 sessionId = self.sessionId,
                 authKey = self.authKey,
                 gameId = game.PlaceId,
@@ -50,7 +53,7 @@ function Connection:Connect()
     end)
     
     if success then
-        local data = HttpService:JSONDecode(response)
+        local data = getHttpService():JSONDecode(response)
         self.connected = data.success or false
         return self.connected
     end
@@ -65,8 +68,8 @@ function Connection:Send(command)
     end
     
     local success, response = pcall(function()
-        return HttpService:PostAsync(self.endpoint .. "/execute",
-            HttpService:JSONEncode({
+        return getHttpService():PostAsync(self.endpoint .. "/execute",
+            getHttpService():JSONEncode({
                 sessionId = self.sessionId,
                 authKey = self.authKey,
                 command = command,
@@ -77,7 +80,7 @@ function Connection:Send(command)
     end)
     
     if success then
-        return true, HttpService:JSONDecode(response)
+        return true, getHttpService():JSONDecode(response)
     end
     
     return false, response
@@ -90,13 +93,13 @@ function Connection:PollCommands()
     end
     
     local success, response = pcall(function()
-        return HttpService:GetAsync(
+        return getHttpService():GetAsync(
             self.endpoint .. "/poll?session=" .. self.sessionId .. "&auth=" .. self.authKey
         )
     end)
     
     if success and response ~= "" then
-        return HttpService:JSONDecode(response)
+        return getHttpService():JSONDecode(response)
     end
     
     return nil
@@ -126,8 +129,8 @@ function Connection:Heartbeat()
     end
     
     local success = pcall(function()
-        HttpService:PostAsync(self.endpoint .. "/heartbeat",
-            HttpService:JSONEncode({
+        getHttpService():PostAsync(self.endpoint .. "/heartbeat",
+            getHttpService():JSONEncode({
                 sessionId = self.sessionId,
                 authKey = self.authKey,
                 timestamp = os.time()
@@ -154,8 +157,8 @@ end
 -- Send execution result back
 function Connection:SendResult(commandId, success, result)
     pcall(function()
-        HttpService:PostAsync(self.endpoint .. "/result",
-            HttpService:JSONEncode({
+        getHttpService():PostAsync(self.endpoint .. "/result",
+            getHttpService():JSONEncode({
                 sessionId = self.sessionId,
                 commandId = commandId,
                 success = success,
@@ -171,8 +174,8 @@ end
 function Connection:Disconnect()
     if self.connected then
         pcall(function()
-            HttpService:PostAsync(self.endpoint .. "/disconnect",
-                HttpService:JSONEncode({
+            getHttpService():PostAsync(self.endpoint .. "/disconnect",
+                getHttpService():JSONEncode({
                     sessionId = self.sessionId,
                     authKey = self.authKey
                 }),

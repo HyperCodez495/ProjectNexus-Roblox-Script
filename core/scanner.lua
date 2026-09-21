@@ -15,8 +15,14 @@
 local Scanner = {}
 Scanner.__index = Scanner
 
-local HttpService = game:GetService("HttpService")
-local RunService = game:GetService("RunService")
+-- Services loaded on demand
+local function getHttpService()
+    return game:GetService("HttpService")
+end
+
+local function getRunService()
+    return game:GetService("RunService")
+end
 
 -- Known admin system signatures
 local ADMIN_SYSTEMS = {
@@ -309,7 +315,7 @@ function Scanner:AnalyzeRemote(remote)
     end
     
     -- Check for serverside connections (indicates active handler)
-    if RunService:IsClient() then
+    if getRunService():IsClient() then
         -- Can't verify serverside connections from client
         risk.severity = risk.severity + 2
         risk.reason = risk.reason .. " | Unknown serverside validation"
@@ -481,7 +487,7 @@ end
 -- Export scan results
 function Scanner:ExportResults(results, format)
     if format == "json" then
-        return HttpService:JSONEncode(results)
+        return getHttpService():JSONEncode(results)
     elseif format == "table" then
         return results
     else
