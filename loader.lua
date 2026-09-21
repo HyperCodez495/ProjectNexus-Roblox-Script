@@ -29,10 +29,18 @@ local function loadNexus()
     
     -- Load main module
     print("[NEXUS] Loading from GitHub...")
-    local Nexus = loadstring(game:HttpGet(GITHUB_BASE .. "main.lua"))()
+    local success, Nexus = pcall(function()
+        return loadstring(game:HttpGet(GITHUB_BASE .. "main.lua"))()
+    end)
+    
+    if not success then
+        warn("[NEXUS] Failed to load main module")
+        warn("[NEXUS] Error: " .. tostring(Nexus))
+        return
+    end
     
     if not Nexus then
-        warn("[NEXUS] Failed to load main module")
+        warn("[NEXUS] Main module returned nil")
         return
     end
     
