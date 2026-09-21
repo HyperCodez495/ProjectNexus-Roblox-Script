@@ -1,282 +1,387 @@
-# Project Nexus - GitHub Setup Guide
+# Nexus Setup Guide
 
-## Quick Setup (5 minutes)
+Complete setup instructions for deploying Nexus to GitHub and using it in Roblox games.
 
-### Step 1: Upload to GitHub
+---
 
-1. **Create new repository** on GitHub:
-   - Name: `ProjectNexus` (or whatever you want)
-   - Visibility: **Private** (recommended) or Public
-   - Don't initialize with README (you already have one)
+## Prerequisites
 
-2. **Push code to GitHub**:
+- **Git** installed on your system
+- **GitHub account**
+- **Roblox executor** with HTTP capabilities (Synapse, Script-Ware, KRNL, etc.)
+- **Basic understanding** of Lua and Git
+
+---
+
+## GitHub Setup
+
+### Method 1: Automated Setup (Windows)
+
+1. Open PowerShell in the ProjectNexus directory
+2. Run the initialization script:
+   ```powershell
+   .\init.bat
+   ```
+3. Follow the prompts to enter your GitHub username
+4. The script will automatically configure and push to GitHub
+
+### Method 2: Automated Setup (Linux/Mac)
+
+1. Open terminal in the ProjectNexus directory
+2. Make the script executable:
+   ```bash
+   chmod +x init.sh
+   ```
+3. Run the setup:
+   ```bash
+   ./init.sh
+   ```
+4. Follow the prompts to enter your GitHub username
+
+### Method 3: Manual Setup
+
+If you prefer manual control:
+
+**Step 1: Update Repository URLs**
+
+Edit `loader_v2.lua` and replace the repository name:
+
+```lua
+local GITHUB_REPO = "YOUR_USERNAME/ProjectNexus"
+local GITHUB_BRANCH = "main"
+```
+
+**Step 2: Initialize Git**
+
 ```bash
-cd ProjectNexus
 git init
 git add .
-git commit -m "Initial commit - Project Nexus v1.0"
+git commit -m "Initial commit - Nexus v2.0"
+```
+
+**Step 3: Create GitHub Repository**
+
+1. Go to https://github.com/new
+2. Name: `ProjectNexus` (or your preferred name)
+3. Visibility: Public (required for raw content access)
+4. Do NOT initialize with README
+
+**Step 4: Push to GitHub**
+
+```bash
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/ProjectNexus.git
 git push -u origin main
 ```
 
-### Step 2: Configure Repository Name
+---
 
-**IMPORTANT**: Edit these files and change `YOUR_USERNAME`:
+## Loadstring Configuration
 
-**In `main.lua` (line 11):**
+After pushing to GitHub, your loadstring will be:
+
 ```lua
-local GITHUB_REPO = "YOUR_USERNAME/ProjectNexus"  -- Change this!
+loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader_v2.lua"))()
 ```
 
-**In `loader.lua` (line 17):**
-```lua
-local GITHUB_REPO = "YOUR_USERNAME/ProjectNexus"  -- Change this!
-```
+### Testing Your Loadstring
 
-**Commit the changes:**
-```bash
-git add main.lua loader.lua
-git commit -m "Update GitHub repo URLs"
-git push
-```
-
-### Step 3: Test Loading
-
-**Single-line load (recommended):**
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HyperCodez495/ProjectNexus-Roblox-Script/refs/heads/main/Nexus/ProjectNexus/loader.lua"))()
-```
-
-**Direct main load:**
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/main.lua"))()
-```
-
-Replace `YOUR_USERNAME` with your actual GitHub username!
+1. Open Roblox Studio or join a game
+2. Execute your loadstring
+3. You should see:
+   ```
+   ╔═══════════════════════════════════════════════╗
+   ║          PROJECT NEXUS v2.0                    ║
+   ║     Advanced FE Serverside Executor            ║
+   ║             STANDALONE MODE                    ║
+   ╚═══════════════════════════════════════════════╝
+   ```
+4. Press `Right Shift` to toggle the GUI
 
 ---
 
-## C&C Server Setup (Optional)
+## Customization
 
-If you want remote command & control:
+### Changing the Repository Name
 
-### Local C&C Server
+If you want to use a different repository name:
 
-1. **Install Python dependencies:**
-```bash
-cd server
-pip install -r ../requirements.txt
+1. **Update loader_v2.lua:**
+   ```lua
+   local GITHUB_REPO = "YOUR_USERNAME/YOUR_REPO_NAME"
+   ```
+
+2. **Update main.lua:**
+   ```lua
+   local GITHUB_REPO = "YOUR_USERNAME/YOUR_REPO_NAME"
+   ```
+
+3. **Create GitHub repository** with matching name
+
+4. **Push changes:**
+   ```bash
+   git add .
+   git commit -m "Update repository name"
+   git push
+   ```
+
+### Changing the GUI Toggle Key
+
+Edit `loader_v2.lua`, find:
+
+```lua
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.RightShift then
+        gui:Toggle()
+    end
+end)
 ```
 
-2. **Start server:**
+Replace `RightShift` with any key:
+- `LeftControl`
+- `RightControl`
+- `Insert`
+- `Home`
+- `End`
+- etc.
+
+### Custom Branding
+
+**Change UI Title:**
+
+Edit `client/gui.lua`, find:
+
+```lua
+title.Text = "NEXUS"
+```
+
+Change to your preferred name.
+
+**Change UI Colors:**
+
+Edit the `Theme` table in `client/gui.lua`:
+
+```lua
+local Theme = {
+    Background = Color3.fromRGB(18, 18, 22),
+    Surface = Color3.fromRGB(24, 24, 28),
+    Primary = Color3.fromRGB(99, 102, 241),  -- Change this
+    -- ... more colors
+}
+```
+
+---
+
+## Advanced Configuration
+
+### C&C Server Setup (Optional)
+
+If you want remote command and control:
+
+**Step 1: Install Python Dependencies**
+
 ```bash
+pip install -r requirements.txt
+```
+
+**Step 2: Configure Server**
+
+Edit `server/command_server.py`:
+
+```python
+HOST = "0.0.0.0"  # Listen on all interfaces
+PORT = 8080       # Or your preferred port
+```
+
+**Step 3: Start Server**
+
+```bash
+cd server
 python command_server.py
 ```
 
-Server runs on `http://localhost:8080`
+**Step 4: Update Loader**
 
-3. **Update config in `loader.lua`:**
-```lua
-serverUrl = "http://YOUR_IP:8080",  -- Use your actual IP
-```
-
-### Cloud C&C Server (Heroku/Railway/etc)
-
-1. **Deploy `command_server.py` to cloud platform**
-2. **Get your deployed URL** (e.g., `https://nexus-c2.herokuapp.com`)
-3. **Update `loader.lua`:**
-```lua
-serverUrl = "https://nexus-c2.herokuapp.com",
-```
-
----
-
-## Usage Examples
-
-### Basic Usage (No C&C)
-
-Works without C&C server for local exploitation:
+Edit `loader_v2.lua`:
 
 ```lua
--- Load from GitHub
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
-
--- Wait for initialization
-wait(3)
-
--- Access instance
-local nexus = _G.NexusInstance
-
--- Scan game
-local scan = nexus:ScanCurrentGame()
-print("Rating:", scan.rating)
-
--- Try to compromise
-if nexus:Compromise() then
-    print("Compromised!")
-    
-    -- Execute commands
-    nexus:Command("kill", "PlayerName")
-    nexus:Execute([[print("Serverside!")]])
-end
-```
-
-### Advanced Usage (With C&C)
-
-1. **Start C&C server** (see above)
-2. **Update loader.lua** with your C&C URL
-3. **Commit and push changes**
-4. **Load in game:**
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
-```
-
-Now you can control the game remotely via C&C API!
-
----
-
-## Sharing Your Loader
-
-### Public Share (Paste Sites)
-
-Create a simple loadstring for others:
-
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/loader.lua"))()
-```
-
-Post this to:
-- Pastebin
-- Rentry.co
-- GitHub Gist
-- Discord
-
-### Private Share (Whitelist)
-
-Add authentication to `loader.lua`:
-
-```lua
-local WHITELISTED_USERS = {
-    ["Username1"] = true,
-    ["Username2"] = true,
+local config = {
+    serverUrl = "http://YOUR_IP:8080",  -- Your server URL
+    autoInit = true,
 }
-
-local player = game:GetService("Players").LocalPlayer
-if not WHITELISTED_USERS[player.Name] then
-    player:Kick("Not whitelisted")
-    return
-end
 ```
+
+**Note:** Most Roblox executors block `localhost` HTTP requests. You'll need to:
+- Deploy to a VPS/cloud server
+- Use ngrok for testing
+- Configure port forwarding
 
 ---
 
 ## Troubleshooting
 
-### "HttpService is not enabled"
+### "Failed to load main module"
 
-Executor needs HTTP capabilities. Most modern executors support this.
+**Cause:** GitHub raw URL not accessible or incorrect repository name
 
-### "Failed to load module from GitHub"
+**Solution:**
+1. Verify repository is public
+2. Check `GITHUB_REPO` matches your actual username/repo
+3. Test URL manually in browser: `https://raw.githubusercontent.com/YOUR_USERNAME/ProjectNexus/main/main.lua`
+4. Make sure you've pushed all files to GitHub
 
-1. Check your GitHub username in URLs
-2. Make sure repository is **public** (or use GitHub token for private)
-3. Verify files are in correct locations
-4. Check raw GitHub URL in browser first
+### "Main module returned nil"
 
-### "Connection to C&C failed"
+**Cause:** Syntax error in `main.lua` or circular dependency
 
-1. Make sure C&C server is running
-2. Check firewall isn't blocking port 8080
-3. Use public IP or cloud URL, not `localhost`
-4. Test C&C health: `curl http://YOUR_IP:8080/health`
+**Solution:**
+1. Test `main.lua` syntax locally
+2. Check console for error messages
+3. Verify all `require()` statements are correct
 
-### "Compromise failed"
+### GUI Not Showing
 
-Game may not have exploitable vulnerabilities:
-- Check scan results: `nexus:ScanCurrentGame()`
-- Try manual injection: `nexus:Compromise("inject")`
-- Look for manual backdoor opportunities
+**Cause:** Toggle key conflict or GUI creation error
 
----
+**Solutions:**
+1. Check console output for errors
+2. Try a different toggle key
+3. Verify `client/gui.lua` loaded successfully
+4. Manually create GUI: `_G.NexusInstance.gui = loadstring(game:HttpGet("YOUR_URL/client/gui.lua"))().new() _G.NexusInstance.gui:Create():Toggle()`
 
-## Security Notes
+### "No vulnerabilities found"
 
-### For Private Use
+**Cause:** Game is properly secured or pattern detection needs refinement
 
-Keep repository **private** to prevent:
-- Detection by anti-cheat developers
-- Signature-based blocking
-- Public scrutiny
+**What to try:**
+1. Check if game uses FilteringEnabled (most do now)
+2. Look for admin systems manually
+3. Test on different games
+4. Review scanner patterns in `core/scanner.lua`
 
-### For Public Release
+### HTTP Requests Blocked
 
-If making public:
-- Remove or obfuscate C&C server code
-- Add rate limiting
-- Include stronger obfuscation
-- Add authentication/whitelist
+**Cause:** Executor doesn't support HTTP or game blocks it
 
-### Operational Security
-
-- Use VPN when operating C&C server
-- Don't use main Roblox account for testing
-- Rotate C&C server IPs regularly
-- Monitor for detection/bans
+**Solutions:**
+1. Verify your executor supports `HttpGet`
+2. Test with: `print(game:HttpGet("https://httpbin.org/get"))`
+3. Some games disable HTTP - try a different game
+4. Use a different executor with better HTTP support
 
 ---
 
-## GitHub Repository Structure
+## Security Considerations
 
+### Repository Privacy
+
+**Public Repositories:**
+- ✅ Free
+- ✅ Easy to use with loadstrings
+- ❌ Code is visible to everyone
+- ❌ May be detected/blacklisted
+
+**Private Repositories:**
+- ✅ Code is hidden
+- ❌ Requires authentication tokens
+- ❌ More complex setup
+- ❌ Not recommended for beginners
+
+### Detection Avoidance
+
+If you're concerned about detection:
+
+1. **Use a unique repository name** (not "ProjectNexus")
+2. **Obfuscate the loader** (advanced users)
+3. **Change variable names** in source code
+4. **Use different branding** (GUI title, colors)
+5. **Host on multiple services** (GitHub, GitLab, Bitbucket)
+
+### Best Practices
+
+1. **Never share your loadstring publicly** if it's linked to your main GitHub account
+2. **Use an alt GitHub account** for security research
+3. **Don't store sensitive data** in the repository
+4. **Regularly update** to stay current with Roblox changes
+5. **Test on your own games first** before using elsewhere
+
+---
+
+## Updating Nexus
+
+### Update from GitHub
+
+1. **Edit your files locally**
+2. **Commit changes:**
+   ```bash
+   git add .
+   git commit -m "Description of changes"
+   ```
+3. **Push to GitHub:**
+   ```bash
+   git push
+   ```
+4. **Wait 1-2 minutes** for GitHub cache to clear
+5. **Reload in Roblox** — your executor will pull the latest version
+
+### Cache Busting
+
+Nexus automatically adds cache busters to HTTP requests:
+
+```lua
+local cacheBuster = "?cb=" .. tostring(math.random(1000000, 9999999))
 ```
-ProjectNexus/
-├── .gitignore
-├── README.md
-├── SETUP.md              ← You are here
-├── requirements.txt
-├── main.lua              ← Main entry point
-├── loader.lua            ← Single-line loader
-├── core/
-│   ├── scanner.lua
-│   ├── injector.lua
-│   ├── executor.lua
-│   └── connection.lua
-├── server/
-│   └── command_server.py
-├── client/
-│   └── gui.lua
-└── examples/
-    ├── basic_usage.lua
-    └── advanced_injection.lua
-```
+
+This ensures you always get the latest code.
+
+---
+
+## Testing Checklist
+
+Before considering setup complete:
+
+- [ ] Repository is public on GitHub
+- [ ] All files are pushed successfully
+- [ ] Raw URLs are accessible (test in browser)
+- [ ] Loadstring executes without errors
+- [ ] GUI appears and toggles correctly
+- [ ] Scanner produces output
+- [ ] Executor can run code
+- [ ] Status indicator updates
 
 ---
 
 ## Next Steps
 
-1. ✅ Upload to GitHub
-2. ✅ Update repository URLs
-3. ✅ Test loadstring
-4. ⬜ (Optional) Setup C&C server
-5. ⬜ (Optional) Add whitelist
-6. ⬜ Start using!
+Now that Nexus is set up:
+
+1. **Read the main README.md** for usage instructions
+2. **Review the examples** in `examples/` directory
+3. **Test on your own game** first
+4. **Understand the scanner output** before attempting exploits
+5. **Use responsibly** and ethically
 
 ---
 
-## Support
+## Getting Help
 
-Issues? Check:
-1. GitHub URLs are correct
-2. Repository is public (or you have access)
-3. Files are in right locations
-4. Executor supports HTTP
+If you encounter issues not covered here:
 
-For C&C issues:
-1. Server is running
-2. Firewall allows connections
-3. Using correct IP/URL
-4. Port 8080 is open
+1. Check the console output for error messages
+2. Verify all setup steps were completed
+3. Test individual components (scanner, GUI, executor)
+4. Review source code comments for hints
+5. Try on a different game to isolate the issue
 
 ---
 
-**Project Nexus** - GitHub deployment complete. Ship it.
+## Additional Resources
+
+- **GitHub Raw URL Format:** `https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/FILE.lua`
+- **Testing HTTP Access:** `game:HttpGet("https://httpbin.org/get")`
+- **Lua Bytecode:** Advanced users can compile to bytecode for obfuscation
+- **Alternative Hosts:** GitLab, Bitbucket, Pastebin (less reliable)
+
+---
+
+**Setup Complete!** You're ready to use Nexus for security research.
