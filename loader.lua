@@ -17,7 +17,7 @@ local function loadNexus()
     -- Configuration
     local GITHUB_REPO = "HyperCodez495/ProjectNexus-Roblox-Script"
     local GITHUB_BRANCH = "main"
-    local GITHUB_BASE = string.format("https://raw.githubusercontent.com/%s/%s/Nexus/ProjectNexus/", GITHUB_REPO, GITHUB_BRANCH)
+    local GITHUB_BASE = string.format("https://raw.githubusercontent.com/%s/%s/", GITHUB_REPO, GITHUB_BRANCH)
     
     local config = {
         githubBase = GITHUB_BASE,
