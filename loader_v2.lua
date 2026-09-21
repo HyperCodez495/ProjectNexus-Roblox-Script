@@ -36,24 +36,34 @@ local function loadNexus()
     print("[NEXUS] Loading core framework...")
     local cacheBuster = "?v=" .. tostring(math.random(100000, 999999))
     
-    local success, Nexus = pcall(function()
-        return loadstring(game:HttpGet(GITHUB_BASE .. "main.lua" .. cacheBuster))()
+    local success, result = pcall(function()
+        local code = game:HttpGet(GITHUB_BASE .. "main.lua" .. cacheBuster)
+        local func, err = loadstring(code)
+        if not func then
+            error("Syntax error in main.lua: " .. tostring(err))
+        end
+        return func()
     end)
     
     if not success then
         warn("[NEXUS] Failed to load main module")
-        warn("[NEXUS] Error: " .. tostring(Nexus))
+        warn("[NEXUS] Error: " .. tostring(result))
         warn("[NEXUS] Please check:")
         warn("[NEXUS]   1. Repository is public")
         warn("[NEXUS]   2. GITHUB_REPO is correct")
         warn("[NEXUS]   3. All files are pushed to GitHub")
+        warn("[NEXUS]   4. main.lua has no syntax errors")
         return
     end
     
-    if not Nexus then
-        warn("[NEXUS] Main module returned nil - check main.lua syntax")
+    if not result then
+        warn("[NEXUS] Main module returned nil")
+        warn("[NEXUS] This means main.lua executed but didn't return the Nexus class")
+        warn("[NEXUS] Check the end of main.lua for 'return Nexus'")
         return
     end
+    
+    local Nexus = result
     
     print("[NEXUS] ✓ Core framework loaded")
     
