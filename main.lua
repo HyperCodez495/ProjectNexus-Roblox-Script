@@ -38,11 +38,18 @@ local Injector = loadModule("injector")
 local Executor = loadModule("executor")
 local Connection = loadModule("connection")
 
--- Verify all modules loaded
-if not Scanner or not Injector or not Executor or not Connection then
-    warn("[NEXUS] Critical module loading failure - aborting initialization")
-    warn("[NEXUS] Check that all files are pushed to GitHub")
-    return nil
+-- Log module status but don't abort
+if not Scanner then
+    warn("[NEXUS] Scanner module failed to load")
+end
+if not Injector then
+    warn("[NEXUS] Injector module failed to load")
+end
+if not Executor then
+    warn("[NEXUS] Executor module failed to load")
+end
+if not Connection then
+    warn("[NEXUS] Connection module failed to load")
 end
 
 local Nexus = {}
