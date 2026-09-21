@@ -19,8 +19,9 @@ local GITHUB_BASE = string.format("https://raw.githubusercontent.com/%s/%s/", GI
 
 -- Core module imports with fallback to embedded
 local function loadModule(name, embedded)
+    local cacheBuster = "?v=" .. tostring(tick())
     local success, module = pcall(function()
-        return loadstring(game:HttpGet(GITHUB_BASE .. "core/" .. name .. ".lua"))()
+        return loadstring(game:HttpGet(GITHUB_BASE .. "core/" .. name .. ".lua" .. cacheBuster))()
     end)
     if success and module then
         return module

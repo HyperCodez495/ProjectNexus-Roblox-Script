@@ -27,10 +27,13 @@ local function loadNexus()
         showGui = true
     }
     
-    -- Load main module
+    -- Load main module (with cache buster)
     print("[NEXUS] Loading from GitHub...")
+    local cacheBuster = "?v=" .. tostring(tick())
+    print("[NEXUS] URL: " .. GITHUB_BASE .. "main.lua" .. cacheBuster)
+    
     local success, Nexus = pcall(function()
-        return loadstring(game:HttpGet(GITHUB_BASE .. "main.lua"))()
+        return loadstring(game:HttpGet(GITHUB_BASE .. "main.lua" .. cacheBuster))()
     end)
     
     if not success then
