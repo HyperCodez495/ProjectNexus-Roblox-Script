@@ -22,7 +22,7 @@ local function loadNexus()
     local config = {
         githubBase = GITHUB_BASE,
         serverUrl = "http://localhost:8080",  -- Your C&C server
-        autoInit = false,  -- Changed to false to skip server connection
+        autoInit = true,  -- Connect to C&C server
         autoScan = true,
         showGui = true
     }
@@ -54,11 +54,14 @@ local function loadNexus()
         persistentMode = true
     })
     
-    print("[NEXUS] Instance created (standalone mode)")
-    print("[NEXUS] Scanning current game...")
-    
-    -- Scan without initializing connection
-    local scanResults = instance:ScanCurrentGame()
+    -- Initialize
+    if config.autoInit then
+        local success = instance:Initialize()
+        if not success then
+            warn("[NEXUS] Initialization failed")
+            return
+        end
+    end
     
     -- Try to compromise
     spawn(function()
