@@ -22,7 +22,7 @@ local function loadNexus()
     local config = {
         githubBase = GITHUB_BASE,
         serverUrl = "http://localhost:8080",  -- Your C&C server
-        autoInit = true,  -- Connect to C&C server
+        autoInit = false,  -- Set to false - Roblox blocks localhost HTTP requests
         autoScan = true,
         showGui = true
     }
@@ -54,13 +54,12 @@ local function loadNexus()
         persistentMode = true
     })
     
-    -- Initialize
-    if config.autoInit then
-        local success = instance:Initialize()
-        if not success then
-            warn("[NEXUS] Initialization failed")
-            return
-        end
+    print("[NEXUS] Instance created (standalone mode - C&C requires external IP)")
+    print("[NEXUS] Scanning current game...")
+    
+    -- Scan without initializing connection
+    if config.autoScan then
+        instance:ScanCurrentGame()
     end
     
     -- Try to compromise
